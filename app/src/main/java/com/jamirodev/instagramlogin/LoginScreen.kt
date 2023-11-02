@@ -1,6 +1,7 @@
 package com.jamirodev.instagramlogin
 
 import android.app.Activity
+import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -101,9 +102,15 @@ fun Body(modifier: Modifier) {
     Column(modifier = modifier) {
         InstagramLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(16.dp)
-        Email(email) { email = it }
+        Email(email) {
+            email = it
+            isLoginEnabled = enableLogin(email, password)
+        }
         Spacer(4.dp)
-        Password(password) { password = it }
+        Password(password) {
+            password = it
+            isLoginEnabled = enableLogin(email, password)
+        }
         Spacer(8.dp)
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(16.dp)
@@ -182,6 +189,9 @@ fun LoginButton(loginEnabled: Boolean) {
         Text(text = "Log in")
     }
 }
+
+fun enableLogin(email: String, password: String) =
+    Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 6
 
 @Composable
 fun ForgotPassword(modifier: Modifier) {
