@@ -2,15 +2,22 @@ package com.jamirodev.instagramlogin
 
 import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -46,14 +53,83 @@ fun LoginScreen() {
 fun Body(modifier: Modifier) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    var isLoginEnabled by rememberSaveable { mutableStateOf(false) }
     Column(modifier = modifier) {
-        InstagramLogo()
+        InstagramLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(16.dp)
         Email(email) { email = it }
         Spacer(4.dp)
         Password(password) { email = it }
         Spacer(8.dp)
         ForgotPassword(Modifier.align(Alignment.End))
+        Spacer(16.dp)
+        LoginButton(isLoginEnabled)
+        Spacer(16.dp)
+        LoginDivider()
+        Spacer(32.dp)
+        LoginFace()
+    }
+}
+
+@Composable
+fun LoginFace() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.fb),
+            contentDescription = "Facebook icon",
+            Modifier
+                .size(30.dp)
+                .padding(end = 8.dp)
+        )
+        Text(
+            text = "Continue as Jamiro",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = Color(0xFF7EBBE5)
+        )
+    }
+}
+
+@Composable
+fun LoginDivider() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Divider(
+            Modifier
+                .background(Color(0xFFF9f9f9))
+                .weight(1f)
+                .height(1.dp)
+        )
+        Text(
+            text = "OR",
+            modifier = Modifier.padding(horizontal = 18.dp),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFFb5b5b5)
+        )
+        Divider(
+            Modifier
+                .background(Color(0xFFF9f9f9))
+                .weight(1f)
+                .height(1.dp)
+        )
+    }
+}
+
+@Composable
+fun LoginButton(loginEnabled: Boolean) {
+    Button(
+        onClick = { },
+        enabled = loginEnabled,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(text = "Log in")
     }
 }
 
@@ -71,13 +147,21 @@ fun ForgotPassword(modifier: Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Password(password: String, onTextChanged: (String) -> Unit) {
-    TextField(value = password, onValueChange = { onTextChanged(it) })
+    TextField(
+        value = password,
+        onValueChange = { onTextChanged(it) },
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Email(email: String, onTextChanged: (String) -> Unit) {
-    TextField(value = email, onValueChange = { onTextChanged(it) })
+    TextField(
+        value = email,
+        onValueChange = { onTextChanged(it) },
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
@@ -86,8 +170,12 @@ fun Spacer(space: Dp) {
 }
 
 @Composable
-fun InstagramLogo() {
-    Image(painter = painterResource(id = R.drawable.insta), contentDescription = "Instagram logo")
+fun InstagramLogo(modifier: Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.insta),
+        contentDescription = "Instagram logo",
+        modifier = modifier
+    )
 }
 
 @Composable
