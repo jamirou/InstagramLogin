@@ -1,4 +1,4 @@
-package com.jamirodev.instagramlogin.login
+package com.jamirodev.instagramlogin.login.ui
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData
