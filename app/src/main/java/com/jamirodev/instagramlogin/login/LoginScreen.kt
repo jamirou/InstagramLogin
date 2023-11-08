@@ -1,7 +1,6 @@
 package com.jamirodev.instagramlogin.login
 
 import android.app.Activity
-import android.util.Patterns
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,7 +56,7 @@ fun LoginScreen(loginViewModel: LoginViewModel) {
             .padding(8.dp)
     ) {
         Header(Modifier.align(Alignment.TopEnd))
-        Body(Modifier.align(Alignment.Center),loginViewModel)
+        Body(Modifier.align(Alignment.Center), loginViewModel)
         Footer(Modifier.align(Alignment.BottomCenter))
     }
 }
@@ -97,19 +96,18 @@ fun SignUp() {
 
 @Composable
 fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
-    val email:String by loginViewModel.email.observeAsState(initial = "")
-    var password by remember { mutableStateOf("") }
-    var isLoginEnabled by remember { mutableStateOf(false) }
+    val email: String by loginViewModel.email.observeAsState(initial = "")
+    val password: String by loginViewModel.password.observeAsState(initial = "")
+    val isLoginEnabled by loginViewModel.isLoginEnabled.observeAsState(initial = false)
     Column(modifier = modifier) {
         InstagramLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(16.dp)
         Email(email) {
-            loginViewModel.onLoginChanged(it)
+            loginViewModel.onLoginChanged(email = it, password = password)
         }
         Spacer(4.dp)
         Password(password) {
-            password = it
-            isLoginEnabled = enableLogin(email, password)
+            loginViewModel.onLoginChanged(email = email, password = it)
         }
         Spacer(8.dp)
         ForgotPassword(Modifier.align(Alignment.End))
@@ -190,8 +188,6 @@ fun LoginButton(loginEnabled: Boolean) {
     }
 }
 
-fun enableLogin(email: String, password: String) =
-    Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 6
 
 @Composable
 fun ForgotPassword(modifier: Modifier) {
